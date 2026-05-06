@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Core 34 | Secure Register</title>
+</head>
+<body>
+    <div class="card">
+        <h2>CREATE ACCOUNT</h2>
+        <input type="text" id="regUser" placeholder="Username">
+        <input type="password" id="regPass" placeholder="Personal Password">
+        <select id="regRole" onchange="toggleAdminField()">
+            <option value="User">Standard User</option>
+            <option value="Admin">Administrator</option>
+        </select>
+        <div id="adminKeyWrapper" style="display:none">
+            <input type="password" id="adminKey" placeholder="Master Admin Key" style="border-color: var(--admin-color)">
+        </div>
+        <button class="btn" onclick="handleRegister()">REGISTER</button>
+    </div>
+
+    <script>
+        const MASTER_KEY = "Youssef@2026"; 
+
+        function toggleAdminField() {
+            const role = document.getElementById('regRole').value;
+            document.getElementById('adminKeyWrapper').style.display = role === 'Admin' ? 'block' : 'none';
+        }
+
+        function handleRegister() {
+            const user = document.getElementById('regUser').value;
+            const pass = document.getElementById('regPass').value;
+            const role = document.getElementById('regRole').value;
+            const key = document.getElementById('adminKey').value;
+
+            if (role === 'Admin' && key !== MASTER_KEY) {
+                alert("Wrong Admin Key! Access Denied.");
+                return;
+            }
+
+            if (user && pass) {
+                localStorage.setItem('storedUser', user);
+                localStorage.setItem('storedPass', pass);
+                localStorage.setItem('storedRole', role);
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>
